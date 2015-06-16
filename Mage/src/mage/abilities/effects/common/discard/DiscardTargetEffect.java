@@ -87,7 +87,16 @@ public class DiscardTargetEffect extends OneShotEffect {
     public boolean apply(Game game, Ability source) {
         Player player = game.getPlayer(targetPointer.getFirst(game, source));
         if (player != null) {
-            player.discard(amount.calculate(game, source, this), randomDiscard, source, game);
+            int cardsInHand = player.getHand().size();
+            int targetAmount = amount.calculate(game, source, this);
+            int finalAmount = 0;
+            if(targetAmount > cardsInHand){
+                finalAmount = cardsInHand;
+            }
+            else{
+                finalAmount = targetAmount;
+            }
+            player.discard(finalAmount, randomDiscard, source, game);
             return true;
         }
         return false;
